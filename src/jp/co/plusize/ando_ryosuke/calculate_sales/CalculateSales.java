@@ -27,6 +27,7 @@ public class CalculateSales {
 
 		HashMap<String, String> commodityMap = new HashMap<String, String>();
 		HashMap<String, Long> commodityEarningsMap = new HashMap<String, Long>();
+
 		//ブランチの入力
 		if(!input(branchMap, branchEarningsMap, args[0], "branch.lst", "支店", "\\d{3}$")){
 			return;
