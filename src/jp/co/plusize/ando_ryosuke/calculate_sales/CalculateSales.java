@@ -36,7 +36,6 @@ public class CalculateSales {
 			return;
 		}
 
-
 		//売上ファイル名の連番チェック
 		File allFiles = new File(args[0]);
 		String[] allFileList = allFiles.list();
@@ -139,6 +138,7 @@ public class CalculateSales {
 			return;
 		}
 	}
+
 	//メソッドを新たに作成(インプットメソッド)
 	public static boolean input(Map<String, String> nameMap, Map<String, Long> earningsMap, String path, String fileName, String name, String math){
 		File file = new File(path, fileName);
