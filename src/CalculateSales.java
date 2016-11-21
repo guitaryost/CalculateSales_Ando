@@ -1,4 +1,4 @@
-
+package jp.co.plusize.ando_ryosuke.calculate_sales;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
