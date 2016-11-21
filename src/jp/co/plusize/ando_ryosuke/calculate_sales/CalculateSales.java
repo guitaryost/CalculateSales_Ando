@@ -146,11 +146,11 @@ public class CalculateSales {
 			}
 			//rcdDataの要素数を比較
 			if(rcdData.size() != 3){
-				System.out.println( earnings + "のフォーマットが不正です");
+				System.out.println( earnings.get(i) + "のフォーマットが不正です");
 				return;
 			}
 			if(!branchEarningsMap.containsKey(rcdData.get(0))){
-				System.out.println( earnings + "の支店コードが不正です");
+				System.out.println( earnings.get(i) + "の支店コードが不正です");
 				return;
 			}
 			try{
