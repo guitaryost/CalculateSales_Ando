@@ -140,8 +140,9 @@ public class CalculateSales {
 						System.out.println("予期せぬエラーが発生しました");
 						return;
 			}
+		}
 			//rcdDataの要素数を比較
-			if(rcdData.size() >= 4 && rcdData.size() <= 2){
+			if(rcdData.size() != 3){
 				System.out.println( earnings + "のフォーマットが不正です");
 				return;
 			}
@@ -150,43 +151,43 @@ public class CalculateSales {
 				return;
 			}
 			//rcdDataが数字かどうか、10桁を越えているか確認
+			if(!rcdData.get(2).matches("\\d$")){
+				System.out.println("予期せぬエラーが発生しました");
+				return;
+			}
 			try{
-				if(!rcdData.get(2).matches("\\d$")){
+				if(Long.parseLong(rcdData.get(2)) > 9999999999L){
+					System.out.println("合計金額が10桁を超えました");
+					return;
 				}
+				// 1.新しい金額を取得
+				long rcdEarningA = Long.parseLong(rcdData.get(2));
+				// 2.既存の値を取得。Mapに格納されている値を呼び出して取得する。
+				long rcdEarningB = branchEarningsMap.get(rcdData.get(0));
+				// 3.新しい値と既存の値を加算する
+				long branchSales = rcdEarningA + rcdEarningB;
+				//合計金額の桁数チェック
+				if(branchSales > 9999999999L){
+					System.out.println("合計金額が10桁を超えました");
+					return;
+				}
+				// 4. 3で加算した値をしまう
+				branchEarningsMap.put(rcdData.get(0), branchSales);
+				if(commodityEarningsMap.containsKey(rcdData.get(1))){
+				}else{
+					System.out.println( earnings + "の商品コードが不正です");
+					return;
+				}
+				long rcdEarningD = commodityEarningsMap.get(rcdData.get(1));
+				long commodityEarningsSales = rcdEarningA + rcdEarningD;
+				if(commodityEarningsSales  > 9999999999L){
+					System.out.println("合計金額が10桁を超えました");
+					return;
+				}
+				commodityEarningsMap.put(rcdData.get(1),commodityEarningsSales);
 			}catch(NumberFormatException e){
 				System.out.println("予期せぬエラーが発生しました");
 			}
-			if(Long.parseLong(rcdData.get(2)) > 9999999999L){
-				System.out.println("合計金額が10桁を超えました");
-				return;
-			}
-		}
-			// 1.新しい金額を取得
-			long rcdEarningA = Long.parseLong(rcdData.get(2));
-			// 2.既存の値を取得。Mapに格納されている値を呼び出して取得する。
-			long rcdEarningB = branchEarningsMap.get(rcdData.get(0));
-			// 3.新しい値と既存の値を加算する
-			long branchSales = rcdEarningA + rcdEarningB;
-			//合計金額の桁数チェック
-			if(branchSales > 9999999999L){
-				System.out.println("合計金額が10桁を超えました");
-				return;
-			}
-			// 4. 3で加算した値をしまう
-			branchEarningsMap.put(rcdData.get(0), branchSales);
-			if(commodityEarningsMap.containsKey(rcdData.get(1))){
-			}else{
-				System.out.println( earnings + "の商品コードが不正です");
-				return;
-			}
-			long rcdEarningC = Long.parseLong(rcdData.get(2));
-			long rcdEarningD = commodityEarningsMap.get(rcdData.get(1));
-			long commodityEarningsSales = rcdEarningC + rcdEarningD;
-			if(commodityEarningsSales  > 9999999999L){
-				System.out.println("合計金額が10桁を超えました");
-				return;
-			}
-			commodityEarningsMap.put(rcdData.get(1),commodityEarningsSales);
 		}
 
 		//集計結果出力
