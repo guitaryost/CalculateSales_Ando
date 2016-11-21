@@ -103,10 +103,12 @@ public class CalculateSales {
 		//売上ファイル名の連番チェック
 		File allFiles = new File(args[0]);
 		String[] allFileList = allFiles.list();
+
 		ArrayList<String> earnings = new ArrayList<String>();
 		for(String allFileListSt: allFileList){
+			File file = new File(args[0], allFileListSt);
 			//rcdリスト作成、add
-			if(allFileListSt.matches("\\d{8}.rcd$")){
+			if(allFileListSt.matches("\\d{8}.rcd$") && file.isFile()){
 				earnings.add(allFileListSt);
 			}
 		}
@@ -133,14 +135,15 @@ public class CalculateSales {
 			}catch(IOException e){
 				System.out.println("予期せぬエラーが発生しました");
 			}finally{
-					try{
-						if(rcdbr != null);
+				try{
+					if(rcdbr != null){
 						rcdbr.close();
-					}catch(IOException e){
-						System.out.println("予期せぬエラーが発生しました");
-						return;
+					}
+				}catch(IOException e){
+					System.out.println("予期せぬエラーが発生しました");
+					return;
+				}
 			}
-		}
 			//rcdDataの要素数を比較
 			if(rcdData.size() != 3){
 				System.out.println( earnings + "のフォーマットが不正です");
@@ -150,22 +153,23 @@ public class CalculateSales {
 				System.out.println( earnings + "の支店コードが不正です");
 				return;
 			}
-			//rcdDataが数字かどうか、10桁を越えているか確認
-			if(!rcdData.get(2).matches("\\d$")){
-				System.out.println("予期せぬエラーが発生しました");
-				return;
-			}
 			try{
-				if(Long.parseLong(rcdData.get(2)) > 9999999999L){
+
+				// 1.新しい金額を取得
+				long rcdEarningA = Long.parseLong(rcdData.get(2));
+
+
+				if( rcdEarningA > 9999999999L){
 					System.out.println("合計金額が10桁を超えました");
 					return;
 				}
-				// 1.新しい金額を取得
-				long rcdEarningA = Long.parseLong(rcdData.get(2));
+
 				// 2.既存の値を取得。Mapに格納されている値を呼び出して取得する。
 				long rcdEarningB = branchEarningsMap.get(rcdData.get(0));
+
 				// 3.新しい値と既存の値を加算する
 				long branchSales = rcdEarningA + rcdEarningB;
+
 				//合計金額の桁数チェック
 				if(branchSales > 9999999999L){
 					System.out.println("合計金額が10桁を超えました");
@@ -173,8 +177,7 @@ public class CalculateSales {
 				}
 				// 4. 3で加算した値をしまう
 				branchEarningsMap.put(rcdData.get(0), branchSales);
-				if(commodityEarningsMap.containsKey(rcdData.get(1))){
-				}else{
+				if(!commodityEarningsMap.containsKey(rcdData.get(1))){
 					System.out.println( earnings + "の商品コードが不正です");
 					return;
 				}
