@@ -177,8 +177,9 @@ public class CalculateSales {
 				}
 				// 4. 3で加算した値をしまう
 				branchEarningsMap.put(rcdData.get(0), branchSales);
+				
 				if(!commodityEarningsMap.containsKey(rcdData.get(1))){
-					System.out.println( earnings + "の商品コードが不正です");
+					System.out.println( earnings.get(i) + "の商品コードが不正です");
 					return;
 				}
 				long rcdEarningD = commodityEarningsMap.get(rcdData.get(1));
